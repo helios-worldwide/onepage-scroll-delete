@@ -1,6 +1,6 @@
 Simple fork from One Page Scroll 1.3.1 by Pete R.
 
-Simply add "scrollable" class to the section you want to be normally scrollable. Onepage is enabled again when the element reach the end of the scroll. It work also on touch.
+Simply add "scrollable" class to the section you want to be normally scrollable. Onepage is enabled again when the element reaches the end of the scroll. It work also on touch.
 
 
 #One Page Scroll 1.3.1 by Pete R.
