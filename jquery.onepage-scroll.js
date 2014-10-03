@@ -97,7 +97,7 @@
 
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
     	// an top animate so IE8 users can also use this script.
-    	if($('html').hasClass('ie8')){
+    	if($('html').hasClass('no-csstransforms3d')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
           $(this).animate({left: toppos+'px'},settings.animationTime);
@@ -310,11 +310,21 @@
     });
 
     el.swipeEvents().bind("swipeDown",  function(event){
-      if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-      el.moveUp();
+      var section = $("body .section.active");
+      var sectionScroll = section.scrollTop() == 0 ? true: false;
+      if (!$("body").hasClass("disabled-onepage-scroll") && section.hasClass('scrollable') && !sectionScroll) {
+        event.preventDefault();
+      }else{
+        el.moveUp();
+      }
     }).bind("swipeUp", function(event){
-      if (!$("body").hasClass("disabled-onepage-scroll")) event.preventDefault();
-      el.moveDown();
+      var section = $("body .section.active");
+      var sectionScroll = section.scrollTop() + section.innerHeight()>=section[0].scrollHeight;
+      if (!$("body").hasClass("disabled-onepage-scroll") && section.hasClass('scrollable') && !sectionScroll){
+        event.preventDefault();
+      }else{
+        el.moveDown();
+      }
     });
 
     // Create Pagination and Display Them
@@ -372,9 +382,13 @@
 
 
     $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
-      event.preventDefault();
+      //event.preventDefault();
+      var section = $("body .section.active");
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
-      if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
+      var sectionScroll = section.scrollTop() + section.innerHeight()>=section[0].scrollHeight;
+      if(delta > 0) sectionScroll = false;
+      if(section.scrollTop() == 0 && delta > 0) sectionScroll = true;
+      if(!$("body").hasClass("disabled-onepage-scroll") && !section.hasClass('scrollable') || sectionScroll) init_scroll(event, delta);
     });
 
 
