@@ -80,7 +80,7 @@
     };
 
 
-  $.fn.onepage_scroll = function(options){
+  $.fn.onepage_scroll = function(options, element){
     var settings = $.extend({}, defaults, options),
         el = $(this),
         sections = $(settings.sectionContainer)
@@ -94,19 +94,19 @@
 
     $.fn.transformPage = function(settings, pos, index) {
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
-
+      if(typeof element == "undefined") element = $(this);
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
     	// an top animate so IE8 users can also use this script.
     	if($('html').hasClass('no-csstransforms3d')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
-          $(this).animate({left: toppos+'px'},settings.animationTime);
+          element.animate({left: toppos+'px'},settings.animationTime);
         } else {
           var toppos = (el.height()/100)*pos;
-          $(this).animate({top: toppos+'px'},settings.animationTime);
+          element.animate({top: toppos+'px'},settings.animationTime);
         }
     	} else{
-    	  $(this).css({
+    	  element.css({
     	    "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
          "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
